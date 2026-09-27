@@ -1,30 +1,85 @@
-# LZ4 playground demo
+# LZ4 Compression Playground
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+An interactive, fully client-side web playground for the **LZ4 compression algorithm**. Drop files into your browser, compress and decompress them with LZ4, and explore performance benchmarks plus data visualizations — all without your data ever leaving your machine.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/gileb64375-5584s-projects/v0-lz-4-playground-demo)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/teG01VDUc8d)
+## What it does
 
-## Overview
+- **Compress & decompress** files in the browser using LZ4 (via a WebAssembly module)
+- **Performance benchmarks** — measure compression/decompression speed on your own data
+- **Data visualizations** — charts showing compression ratios and throughput (powered by Recharts)
+- **Privacy by design** — everything runs client-side; the WASM module is loaded from a CDN and no data is sent to any server
+- Includes a **privacy policy** page describing the client-side-only data handling
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+## Features
 
-## Deployment
+- Drag-and-drop file upload and compression playground UI
+- Real-time compression ratio stats
+- Benchmark suite comparing LZ4 throughput across payloads
+- Interactive charts (ratio vs. time, throughput distributions)
+- Dark/light themed UI built on shadcn/ui + Radix primitives
+- Tailwind CSS styling
 
-Your project is live at:
+## Tech stack
 
-**[https://vercel.com/gileb64375-5584s-projects/v0-lz-4-playground-demo](https://vercel.com/gileb64375-5584s-projects/v0-lz-4-playground-demo)**
+- **Next.js** 15 (App Router) — statically exported
+- **React** 19
+- **TypeScript**
+- **LZ4** via `@nick/lz4` WebAssembly (loaded at runtime from CDN)
+- **Recharts** for visualizations
+- **shadcn/ui** (Radix UI primitives), **Tailwind CSS**
+- **lucide-react** icons
 
-## Build your app
+## Quick start
 
-Continue building your app on:
+Prerequisites: Node.js 18+ and npm.
 
-**[https://v0.app/chat/projects/teG01VDUc8d](https://v0.app/chat/projects/teG01VDUc8d)**
+```bash
+npm install
+npm run dev
+```
 
-## How It Works
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+### Build (static export)
+
+```bash
+npm run build
+```
+
+This produces a static site in the `out/` directory (via `output: 'export'` in `next.config.mjs`).
+
+## Project structure
+
+```
+├── app/                  # Next.js App Router pages
+│   ├── page.tsx          # Main playground page
+│   ├── privacy/          # Privacy policy page
+│   ├── layout.tsx        # Root layout + metadata
+│   └── globals.css       # Global styles
+├── components/
+│   ├── playground/       # Compression playground UI components
+│   └── ui/               # shadcn/ui primitives
+├── lib/
+│   └── lz4.ts            # LZ4 WASM loader (runtime CDN import)
+├── hooks/                # React hooks
+├── public/               # Static assets
+└── styles/               # Extra styles
+```
+
+## Environment variables
+
+None required. The LZ4 WASM module is fetched at runtime from a public CDN (`https://nick.deno.dev`), so an internet connection is needed at runtime, but no keys or secrets.
+
+## Deployment notes
+
+- The site is fully static — deploy the `out/` directory to any static host (GitHub Pages, Cloudflare Pages, Netlify, Vercel).
+- `next.config.mjs` includes `output: 'export'` and `basePath: '/lz-4-playground-demo'` for the GitHub Pages subpath deployment. Remove `basePath` if deploying to a domain root (e.g. Vercel).
+- Lint and type errors are ignored during builds (`ignoreDuringBuilds` / `ignoreBuildErrors`), matching the original v0-generated config.
+
+## Live demo
+
+**https://girishlade111.github.io/lz-4-playground-demo/**
+
+---
+
+Built by Girish Lade — https://ladestack.in
